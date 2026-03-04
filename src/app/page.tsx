@@ -1,4 +1,5 @@
 "use client";
+import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/core/XR/webXRDefaultExperience";
 import { useEffect, useRef } from "react";
 
@@ -93,7 +94,20 @@ export default function Home() {
 }
 
 // 🔥 ATIVAR WEBXR
-await scene.createDefaultXRExperienceAsync();
+const xr = await scene.createDefaultXRExperienceAsync({
+  floorMeshes: scene.meshes
+});
+
+const fm = xr.baseExperience.featuresManager;
+
+fm.enableFeature(
+  BABYLON.WebXRFeatureName.TELEPORTATION,
+  "latest",
+  {
+    xrInput: xr.input,
+    floorMeshes: scene.meshes
+  }
+);
 
 engine.runRenderLoop(() => {
     scene.render();
