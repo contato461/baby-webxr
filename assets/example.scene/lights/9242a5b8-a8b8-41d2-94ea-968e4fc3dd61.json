@@ -19,7 +19,7 @@
         1
     ],
     "falloffType": 0,
-    "intensity": 3.432499999999996,
+    "intensity": 100,
     "range": 1.7976931348623157e+308,
     "intensityMode": 0,
     "radius": 0.00001,
@@ -29,13 +29,13 @@
     "includeOnlyWithLayerMask": 0,
     "lightmapMode": 0,
     "position": [
-        100,
-        200,
-        100
+        108.56000000000006,
+        221.89999999999992,
+        -34.099999999999966
     ],
     "direction": [
-        -1,
-        -2,
+        1.4100000000000024,
+        -3.1899999999999857,
         -1
     ],
     "name": "sun",

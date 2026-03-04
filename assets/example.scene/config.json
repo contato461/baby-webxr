@@ -117,7 +117,18 @@
             "cameraId": "3ee0f345-7bea-4f59-a657-28c90a7d5e74"
         }
     ],
-    "metadata": {},
+    "metadata": {
+        "rendering": [
+            {
+                "cameraId": "3ee0f345-7bea-4f59-a657-28c90a7d5e74"
+            }
+        ],
+        "physicsGravity": [
+            0,
+            -981,
+            0
+        ]
+    },
     "editorCamera": {
         "tags": null,
         "ellipsoid": [
@@ -134,15 +145,15 @@
         "applyGravity": false,
         "updateUpVectorFromRotation": false,
         "rotation": [
-            0.0796668477935948,
-            -0.7720271652108819,
+            0.45521962500068197,
+            -1.490746257925538,
             0
         ],
         "speed": 200,
         "position": [
-            461.58465792469366,
-            140.63771402557663,
-            -488.54810769867925
+            303.0585594010999,
+            270.84128299237295,
+            -29.458235338438115
         ],
         "upVector": [
             0,
