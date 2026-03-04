@@ -42,7 +42,7 @@ import { loadScene } from "babylonjs-editor-tools";
  * This will allow the loader from `babylonjs-editor-tools` to attach the scripts to the
  * loaded objects (scene, meshes, transform nodes, lights, cameras, etc.).
  */
-import { scriptsMap } from "@/scripts";
+import { scriptsMap } from "@/scripts/scripts";
 
 export default function Home() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -94,8 +94,10 @@ export default function Home() {
 }
 
 // 🔥 ATIVAR WEBXR
+const ground = scene.getMeshByName("ground");
+
 const xr = await scene.createDefaultXRExperienceAsync({
-  floorMeshes: scene.meshes
+  floorMeshes: ground ? [ground] : []
 });
 
 const fm = xr.baseExperience.featuresManager;
@@ -105,7 +107,7 @@ fm.enableFeature(
   "latest",
   {
     xrInput: xr.input,
-    floorMeshes: scene.meshes
+    floorMeshes: ground ? [ground] : []
   }
 );
 

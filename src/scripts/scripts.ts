@@ -4,7 +4,7 @@
  */
 
 import { loadScene, scriptsDictionary, scriptAssetsCache, _applyScriptsForObject, _removeRegisteredScriptInstance, _preloadScriptsAssets } from "babylonjs-editor-tools";
-import * as scripts_box from "./scripts/box";
+import * as scripts_box from "./box";
 
 export const scriptsMap = {
     "scripts/box.ts": scripts_box
