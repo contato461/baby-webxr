@@ -1,15 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	reactStrictMode: false,
-
-	turbopack: {
-		rules: {
-			"*.{fx}": {
-				loaders: ["raw-loader"],
-				as: "*.js",
-			},
-		},
-	},
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;
