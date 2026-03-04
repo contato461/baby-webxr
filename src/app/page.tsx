@@ -102,6 +102,7 @@ const xr = await scene.createDefaultXRExperienceAsync({
 
 const fm = xr.baseExperience.featuresManager;
 
+// TELEPORT
 fm.enableFeature(
   BABYLON.WebXRFeatureName.TELEPORTATION,
   "latest",
