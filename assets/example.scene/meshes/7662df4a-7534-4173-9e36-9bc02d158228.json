@@ -10,10 +10,11 @@
                 0,
                 0
             ],
-            "rotation": [
+            "rotationQuaternion": [
                 0,
                 0,
-                0
+                0,
+                1
             ],
             "scaling": [
                 1,
@@ -141,7 +142,7 @@
             "tags": null,
             "directIntensity": 1,
             "emissiveIntensity": 1,
-            "environmentIntensity": 1,
+            "environmentIntensity": 1.08,
             "specularIntensity": 1,
             "disableBumpMap": false,
             "albedoTexture": {
@@ -169,7 +170,7 @@
                 "hasAlpha": false,
                 "getAlphaFromRGB": false,
                 "level": 1,
-                "coordinatesIndex": 0,
+                "coordinatesIndex": 1,
                 "optimizeUVAllocation": true,
                 "coordinatesMode": 0,
                 "wrapU": 1,
@@ -210,9 +211,9 @@
                 0
             ],
             "albedo": [
-                0.800000011920929,
-                0.800000011920929,
-                0.800000011920929
+                1,
+                1,
+                1
             ],
             "baseWeight": 1,
             "reflectivity": [
@@ -235,7 +236,7 @@
             "useAlphaFromAlbedoTexture": false,
             "forceAlphaTest": false,
             "alphaCutOff": 0.4,
-            "useSpecularOverAlpha": true,
+            "useSpecularOverAlpha": false,
             "useMicroSurfaceFromReflectivityMapAlpha": false,
             "useRoughnessFromMetallicTextureAlpha": true,
             "useRoughnessFromMetallicTextureGreen": false,
@@ -243,9 +244,9 @@
             "useAmbientOcclusionFromMetallicTextureRed": false,
             "useAmbientInGrayScale": false,
             "useAutoMicroSurfaceFromReflectivityMap": false,
-            "usePhysicalLightFalloff": true,
+            "usePhysicalLightFalloff": false,
             "useGLTFLightFalloff": false,
-            "useRadianceOverAlpha": true,
+            "useRadianceOverAlpha": false,
             "useObjectSpaceNormalMap": false,
             "useParallax": false,
             "useParallaxOcclusion": false,
@@ -259,9 +260,9 @@
             "useAlphaFresnel": false,
             "useLinearAlphaFresnel": false,
             "forceNormalForward": false,
-            "enableSpecularAntiAliasing": true,
-            "useHorizonOcclusion": true,
-            "useRadianceOcclusion": true,
+            "enableSpecularAntiAliasing": false,
+            "useHorizonOcclusion": false,
+            "useRadianceOcclusion": false,
             "unlit": false,
             "applyDecalMapAfterDetailMap": false,
             "id": "dd3ac709-23ba-4ae6-a796-d2ea8f9f474a",
@@ -288,6 +289,7 @@
             "zOffsetUnits": 0,
             "pointsCloud": false,
             "fillMode": 0,
+            "useLogarithmicDepth": false,
             "_isVertexOutputInvariant": false,
             "transparencyMode": 0,
             "stencil": {

@@ -169,7 +169,7 @@
                 "hasAlpha": false,
                 "getAlphaFromRGB": false,
                 "level": 1,
-                "coordinatesIndex": 0,
+                "coordinatesIndex": 1,
                 "optimizeUVAllocation": true,
                 "coordinatesMode": 0,
                 "wrapU": 1,

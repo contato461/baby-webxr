@@ -6,7 +6,7 @@
         1
     ],
     "ambientColor": [
-        0,
+        0.34,
         0,
         0
     ],
@@ -21,20 +21,20 @@
                 0,
                 0
             ],
-            "rotationY": 0,
+            "rotationY": 5.400000000000001,
             "files": [],
             "textureMatrix": [
-                1,
+                0.6346928759426353,
                 0,
-                0,
-                0,
-                0,
-                1,
-                0,
-                0,
+                0.7727644875559866,
                 0,
                 0,
                 1,
+                0,
+                0,
+                -0.7727644875559866,
+                0,
+                0.6346928759426353,
                 0,
                 0,
                 0,
@@ -62,7 +62,7 @@
             "name": "assets/country.env",
             "hasAlpha": false,
             "getAlphaFromRGB": false,
-            "level": 1,
+            "level": 1.8799999999999975,
             "coordinatesIndex": 0,
             "optimizeUVAllocation": true,
             "coordinatesMode": 3,
@@ -90,7 +90,7 @@
         "fogEnd": 1000,
         "fogDensity": 0.001,
         "fogColor": [
-            0.640006735140596,
+            1,
             0.640006735140596,
             0.640006735140596
         ]
@@ -106,11 +106,30 @@
         {
             "cameraId": "3cc9ef80-8c60-43e0-bcc4-1b55ff36010d",
             "ssao2RenderingPipeline": null,
-            "vlsPostProcess": null,
+            "vlsPostProcess": {
+                "meshId": "6a927ea7-51d9-4248-9b80-4d34b53b386e",
+                "exposure": 0.07,
+                "decay": 0.9681499999999995,
+                "weight": 0.58767,
+                "density": 0.926,
+                "invert": false,
+                "useCustomMeshPosition": false,
+                "customMeshPosition": [
+                    0,
+                    0,
+                    0
+                ]
+            },
             "ssrRenderingPipeline": null,
             "motionBlurPostProcess": null,
             "defaultRenderingPipeline": null,
-            "taaRenderingPipeline": null,
+            "taaRenderingPipeline": {
+                "factor": 0.05,
+                "samples": 16,
+                "clampHistory": true,
+                "reprojectHistory": true,
+                "disableOnCameraMove": false
+            },
             "iblShadowsRenderPipeline": null
         },
         {
@@ -145,15 +164,15 @@
         "applyGravity": false,
         "updateUpVectorFromRotation": false,
         "rotation": [
-            0.45521962500068197,
-            -1.490746257925538,
+            0.35351567151510715,
+            -1.3263242022768975,
             0
         ],
         "speed": 200,
         "position": [
-            303.0585594010999,
-            270.84128299237295,
-            -29.458235338438115
+            195.47082470477335,
+            90.84727761777978,
+            -66.82230597809857
         ],
         "upVector": [
             0,

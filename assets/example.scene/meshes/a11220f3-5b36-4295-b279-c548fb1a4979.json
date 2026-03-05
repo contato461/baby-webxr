@@ -139,10 +139,10 @@
     "materials": [
         {
             "tags": null,
-            "directIntensity": 1,
+            "directIntensity": 7.219999999999999,
             "emissiveIntensity": 1,
-            "environmentIntensity": 1,
-            "specularIntensity": 1,
+            "environmentIntensity": 1.01,
+            "specularIntensity": 0.8,
             "disableBumpMap": false,
             "albedoTexture": {
                 "tags": null,
@@ -169,7 +169,7 @@
                 "hasAlpha": false,
                 "getAlphaFromRGB": false,
                 "level": 1,
-                "coordinatesIndex": 0,
+                "coordinatesIndex": 1,
                 "optimizeUVAllocation": true,
                 "coordinatesMode": 0,
                 "wrapU": 1,
@@ -196,7 +196,7 @@
             "ambientTextureStrength": 1,
             "ambientTextureImpactOnAnalyticalLights": 0,
             "metallic": 0,
-            "roughness": 1,
+            "roughness": 0.21999999999999986,
             "metallicF0Factor": 1,
             "metallicReflectanceColor": [
                 1,
