@@ -71,8 +71,8 @@ export default function Home() {
 
       camera.attachControl(canvas, true);
 
-      // altura do observador
-      camera.position = new Vector3(0, 1.7, -5);
+     
+      
 
       camera.speed = 0.15;
       camera.angularSensibility = 4000;
