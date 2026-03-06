@@ -59,10 +59,7 @@ export default function Home() {
 
   async function handleLoad(engine: Engine, scene: Scene) {
 
-    // =========================
-    // HAVOK PHYSICS
-    // =========================
-
+    // PHYSICS
     const havok = await HavokPhysics();
 
     scene.enablePhysics(
@@ -76,57 +73,48 @@ export default function Home() {
 
     const canvas = engine.getRenderingCanvas();
 
-    // =========================
-    // CAMERA DESKTOP + MOBILE
-    // =========================
-
     if (scene.activeCamera && canvas) {
 
       const camera = scene.activeCamera as BABYLON.UniversalCamera;
 
+      camera.parent = null;
+
       camera.attachControl(canvas, true);
 
-      // posição inicial
-      camera.position = new Vector3(0, 2, -5);
-
-      camera.speed = 0.15;
-      camera.angularSensibility = 4000;
-
-      // gravidade
-      scene.gravity = new Vector3(0, -0.5, 0);
+      // altura do player
+      camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
+      camera.ellipsoidOffset = new Vector3(0, 0.9, 0);
 
       // colisões
       scene.collisionsEnabled = true;
+      scene.gravity = new Vector3(0, -0.5, 0);
 
       camera.checkCollisions = true;
       camera.applyGravity = true;
 
-      // corpo do player (~1.8m)
-      camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
+      camera.speed = 0.15;
+      camera.angularSensibility = 4000;
 
-      // joystick mobile
+      // JOYSTICK MOBILE
       camera.inputs.addVirtualJoystick();
+
+      // IMPORTANTE: posicionar depois que tudo carregou
+      scene.executeWhenReady(() => {
+
+        camera.position = new Vector3(0, 1.8, -5);
+
+      });
 
     }
 
-    // =========================
-    // ATIVAR COLISÃO EM TODOS MESHES
-    // =========================
-
+    // ativar colisão em todos meshes
     scene.meshes.forEach(mesh => {
       mesh.checkCollisions = true;
     });
 
-    // =========================
-    // PEGAR CHÃO
-    // =========================
-
     const floor = scene.getMeshByName("Floor");
 
-    // =========================
     // XR
-    // =========================
-
     const xr = await scene.createDefaultXRExperienceAsync({
 
       uiOptions: {
@@ -140,7 +128,6 @@ export default function Home() {
 
     });
 
-    // corrigir altura do observador VR
     xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
 
       const xrCamera = xr.baseExperience.camera;
@@ -151,10 +138,6 @@ export default function Home() {
 
     const fm = xr.baseExperience.featuresManager;
 
-    // =========================
-    // TELEPORT VR
-    // =========================
-
     fm.enableFeature(
       BABYLON.WebXRFeatureName.TELEPORTATION,
       "latest",
@@ -164,10 +147,6 @@ export default function Home() {
       }
     );
 
-    // =========================
-    // RENDER LOOP
-    // =========================
-
     engine.runRenderLoop(() => {
       scene.render();
     });
@@ -176,12 +155,10 @@ export default function Home() {
 
   return (
     <main className="flex w-screen h-screen">
-
       <canvas
         ref={canvasRef}
         className="w-full h-full outline-none"
       />
-
     </main>
   );
 
