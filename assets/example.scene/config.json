@@ -62,7 +62,7 @@
             "name": "assets/country.env",
             "hasAlpha": false,
             "getAlphaFromRGB": false,
-            "level": 1.0999999999999865,
+            "level": 0.5599999999999861,
             "coordinatesIndex": 0,
             "optimizeUVAllocation": true,
             "coordinatesMode": 3,
@@ -151,8 +151,8 @@
         "applyGravity": false,
         "updateUpVectorFromRotation": false,
         "rotation": [
-            0.2992040000000194,
-            -4.754734392228691,
+            0.4267040000000195,
+            -4.877234392228691,
             0
         ],
         "speed": 200,

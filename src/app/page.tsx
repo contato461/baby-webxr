@@ -3,7 +3,6 @@ import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/core/XR/webXRDefaultExperience";
 import { useEffect, useRef } from "react";
 
-
 import { Scene } from "@babylonjs/core/scene";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -20,108 +19,100 @@ import "@babylonjs/core/Cameras/universalCamera";
 import "@babylonjs/core/Meshes/groundMesh";
 
 import "@babylonjs/core/Lights/directionalLight";
-import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 
 import "@babylonjs/core/Materials/PBR/pbrMaterial";
-import "@babylonjs/core/Materials/standardMaterial";
-import "@babylonjs/core/XR/features/WebXRDepthSensing";
-
-import "@babylonjs/core/Rendering/depthRendererSceneComponent";
-import "@babylonjs/core/Rendering/prePassRendererSceneComponent";
-
-import "@babylonjs/core/Materials/Textures/Loaders/envTextureLoader";
 
 import "@babylonjs/core/Physics";
 
-import "@babylonjs/materials/sky";
-
 import { loadScene } from "babylonjs-editor-tools";
 
-/**
- * We import the map of all scripts attached to objects in the editor.
- * This will allow the loader from `babylonjs-editor-tools` to attach the scripts to the
- * loaded objects (scene, meshes, transform nodes, lights, cameras, etc.).
- */
 import { scriptsMap } from "@/scripts/scripts";
 
 export default function Home() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
-		if (!canvasRef.current) {
-			return;
-		}
+		if (!canvasRef.current) return;
 
 		const engine = new Engine(canvasRef.current, true, {
 			stencil: true,
 			antialias: true,
-			audioEngine: true,
-			adaptToDeviceRatio: true,
-			disableWebGL2Support: false,
-			useHighPrecisionFloats: true,
-			powerPreference: "high-performance",
-			failIfMajorPerformanceCaveat: false,
+			adaptToDeviceRatio: true
 		});
 
 		const scene = new Scene(engine);
 
 		handleLoad(engine, scene);
 
-		let listener: () => void;
-		window.addEventListener("resize", listener = () => {
-			engine.resize();
-		});
+		const resize = () => engine.resize();
+		window.addEventListener("resize", resize);
 
 		return () => {
 			scene.dispose();
 			engine.dispose();
-
-			window.removeEventListener("resize", listener);
+			window.removeEventListener("resize", resize);
 		};
-	}, [canvasRef]);
+	}, []);
 
 	async function handleLoad(engine: Engine, scene: Scene) {
+
 		const havok = await HavokPhysics();
-		scene.enablePhysics(new Vector3(0, -981, 0), new HavokPlugin(true, havok));
+
+		scene.enablePhysics(
+			new Vector3(0, -9.81, 0),
+			new HavokPlugin(true, havok)
+		);
 
 		SceneLoaderFlags.ForceFullSceneLoadingForIncremental = true;
-		await loadScene("/scene/", "example.babylon", scene, scriptsMap, {
-			quality: "high",
+
+		await loadScene("/scene/", "example.babylon", scene, scriptsMap);
+
+		const canvas = engine.getRenderingCanvas();
+
+		if (scene.activeCamera && canvas) {
+			scene.activeCamera.attachControl(canvas, true);
+			scene.activeCamera.position = new Vector3(0, 1.7, -5);
+		}
+
+		// pegar chão
+		const floor = scene.getMeshByName("Floor");
+
+		// XR EXPERIENCE
+		const xr = await scene.createDefaultXRExperienceAsync({
+
+			uiOptions: {
+				sessionMode: "immersive-vr"
+			},
+
+			optionalFeatures: true,
+
+			floorMeshes: floor ? [floor] : undefined
 		});
 
-		if (scene.activeCamera) {
-    scene.activeCamera.attachControl();
-}
+		// 🔥 IMPORTANTE PARA QUEST
+		xr.baseExperience.sessionManager.referenceSpaceType = "local-floor";
 
-// 🔥 ATIVAR WEBXR
-const Floor = scene.getMeshByName("Floor");
+		const fm = xr.baseExperience.featuresManager;
 
-const xr = await scene.createDefaultXRExperienceAsync({
-  floorMeshes: Floor ? [Floor] : []
-});
+		fm.enableFeature(
+			BABYLON.WebXRFeatureName.TELEPORTATION,
+			"latest",
+			{
+				xrInput: xr.input,
+				floorMeshes: floor ? [floor] : []
+			}
+		);
 
-const fm = xr.baseExperience.featuresManager;
-
-// TELEPORT
-fm.enableFeature(
-  BABYLON.WebXRFeatureName.TELEPORTATION,
-  "latest",
-  {
-    xrInput: xr.input,
-    floorMeshes: Floor ? [Floor] : []
-  }
-);
-
-engine.runRenderLoop(() => {
-    scene.render();
-});
+		engine.runRenderLoop(() => {
+			scene.render();
+		});
 	}
 
 	return (
-		<main className="flex w-screen h-screen flex-col items-center justify-between">
+		<main className="flex w-screen h-screen">
 			<canvas
 				ref={canvasRef}
-				className="w-full h-full outline-none select-none"
+				className="w-full h-full outline-none"
 			/>
 		</main>
 	);
