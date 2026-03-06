@@ -63,8 +63,8 @@ export default function Home() {
 
       camera.attachControl(canvas, true);
 
-      camera.speed = 0.02;
-      camera.angularSensibility = 600;
+      camera.speed = 0.7;
+      camera.angularSensibility = 60;
 
       scene.collisionsEnabled = true;
       camera.checkCollisions = true;
@@ -110,34 +110,43 @@ export default function Home() {
       }
     );
 
-    // BOTÃO EXIT VR
+    // BOTÃO EXIT VR (somente em XR)
 
-    const exitButton = document.createElement("button");
+const exitButton = document.createElement("button");
 
-    exitButton.innerText = "Exit VR";
+exitButton.innerText = "Exit VR";
 
-    exitButton.style.position = "absolute";
-    exitButton.style.bottom = "20px";
-    exitButton.style.left = "20px";
-    exitButton.style.padding = "12px 20px";
-    exitButton.style.fontSize = "18px";
-    exitButton.style.background = "#000";
-    exitButton.style.color = "#fff";
-    exitButton.style.border = "none";
-    exitButton.style.borderRadius = "6px";
-    exitButton.style.zIndex = "1000";
+exitButton.style.position = "absolute";
+exitButton.style.bottom = "20px";
+exitButton.style.left = "20px";
+exitButton.style.padding = "12px 20px";
+exitButton.style.fontSize = "18px";
+exitButton.style.background = "#000";
+exitButton.style.color = "#fff";
+exitButton.style.border = "none";
+exitButton.style.borderRadius = "6px";
+exitButton.style.zIndex = "1000";
 
-    document.body.appendChild(exitButton);
+exitButton.style.display = "none";
 
-    exitButton.onclick = async () => {
+document.body.appendChild(exitButton);
 
-      if (xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
+// aparece somente quando entrar no VR
+xr.baseExperience.onStateChangedObservable.add((state) => {
 
-        await xr.baseExperience.exitXRAsync();
+  if (state === BABYLON.WebXRState.IN_XR) {
+    exitButton.style.display = "block";
+  } else {
+    exitButton.style.display = "none";
+  }
 
-      }
+});
 
-    };
+exitButton.onclick = async () => {
+
+  await xr.baseExperience.exitXRAsync();
+
+};
 
     engine.runRenderLoop(() => {
       scene.render();
