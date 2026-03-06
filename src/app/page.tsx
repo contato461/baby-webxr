@@ -114,25 +114,13 @@ export default function Home() {
     // FORÇAR ALTURA DO QUEST
     // =========================
 
-    xr.baseExperience.sessionManager.onXRSessionInit.add(async () => {
+    xr.baseExperience.onInitialXRPoseSetObservable.add(() => {
 
-      const sessionManager = xr.baseExperience.sessionManager;
+  const xrCamera = xr.baseExperience.camera;
 
-      const xrSession = sessionManager.session;
+  xrCamera.position.y = 1.7;
 
-      const referenceSpace = await xrSession.requestReferenceSpace("local-floor");
-
-      const transform = new XRRigidTransform({
-        x: 0,
-        y: 1.7,
-        z: 0
-      });
-
-      const offsetReferenceSpace = referenceSpace.getOffsetReferenceSpace(transform);
-
-      sessionManager.setReferenceSpace(offsetReferenceSpace);
-
-    });
+});
 
     const fm = xr.baseExperience.featuresManager;
 
