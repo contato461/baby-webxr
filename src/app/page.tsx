@@ -121,7 +121,11 @@ export default function Home() {
     const xrCamera = xr.baseExperience.camera;
 
     if (xrCamera.parent) {
-      xrCamera.parent.position.y = 1.7;
+
+      const rig = xrCamera.parent as BABYLON.TransformNode;
+
+      rig.position.y = 1.7;
+
     }
 
   }
