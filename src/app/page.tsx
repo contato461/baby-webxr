@@ -99,14 +99,19 @@ export default function Home() {
     
     const fixedHeight = 1.7;
 
-    scene.onBeforeRenderObservable.add(() => {
+scene.onBeforeRenderObservable.add(() => {
 
   if (xr.baseExperience.state !== BABYLON.WebXRState.IN_XR) {
 
     const camera = scene.activeCamera as BABYLON.UniversalCamera;
 
     if (camera) {
-      camera.position.y = fixedHeight;
+
+      // só corrige se sair da altura
+      if (Math.abs(camera.position.y - fixedHeight) > 0.01) {
+        camera.position.y = fixedHeight;
+      }
+
     }
 
   }
