@@ -62,7 +62,7 @@
             "name": "assets/country.env",
             "hasAlpha": false,
             "getAlphaFromRGB": false,
-            "level": 1.8799999999999975,
+            "level": 1.0999999999999865,
             "coordinatesIndex": 0,
             "optimizeUVAllocation": true,
             "coordinatesMode": 3,
@@ -106,20 +106,7 @@
         {
             "cameraId": "3cc9ef80-8c60-43e0-bcc4-1b55ff36010d",
             "ssao2RenderingPipeline": null,
-            "vlsPostProcess": {
-                "meshId": "6a927ea7-51d9-4248-9b80-4d34b53b386e",
-                "exposure": 0.07,
-                "decay": 0.9681499999999995,
-                "weight": 0.58767,
-                "density": 0.926,
-                "invert": false,
-                "useCustomMeshPosition": false,
-                "customMeshPosition": [
-                    0,
-                    0,
-                    0
-                ]
-            },
+            "vlsPostProcess": null,
             "ssrRenderingPipeline": null,
             "motionBlurPostProcess": null,
             "defaultRenderingPipeline": null,
@@ -164,15 +151,15 @@
         "applyGravity": false,
         "updateUpVectorFromRotation": false,
         "rotation": [
-            0.35351567151510715,
-            -1.3263242022768975,
+            0.2992040000000194,
+            -4.754734392228691,
             0
         ],
         "speed": 200,
         "position": [
-            195.47082470477335,
-            90.84727761777978,
-            -66.82230597809857
+            -182.07448753217253,
+            188.08334020185603,
+            -4.4280171550713385
         ],
         "upVector": [
             0,

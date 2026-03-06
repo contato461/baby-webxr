@@ -1,0 +1,58 @@
+{
+    "tags": null,
+    "position": [
+        1.1351348161697388,
+        0.5211084485054016,
+        0.9482146501541138
+    ],
+    "rotation": [
+        0,
+        0,
+        0
+    ],
+    "rotationQuaternion": [
+        0,
+        0,
+        0,
+        1
+    ],
+    "scaling": [
+        1,
+        1,
+        1
+    ],
+    "billboardMode": 0,
+    "scalingDeterminant": 1,
+    "infiniteDistance": false,
+    "ignoreNonUniformScaling": false,
+    "reIntegrateRotationIntoRotationQuaternion": false,
+    "name": "geo4",
+    "id": "c01b20b4-516b-464c-a687-97fe04179b13",
+    "state": "",
+    "metadata": {
+        "parentId": 1772759634900
+    },
+    "type": "TransformNode",
+    "uniqueId": 1772759634925,
+    "localMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+    ],
+    "isEnabled": true,
+    "animations": [],
+    "ranges": []
+}

@@ -1,11 +1,7 @@
-[00:00:00.851] Server  LOG     ✓ Ready in 568ms
-[00:13:58.078] Server  WARN    ⚠ Cross origin request detected from 192.168.15.8 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
-Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
-[00:13:58.093] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:13:58.441] Browser LOG     BJS - [22:31:52]: Babylon.js v8.41.0 - WebGL2 - Parallel shader compilation
-[00:13:59.148] Browser WARN    BJS - [22:31:53]: Error executing makeXRCompatible. This does not mean that the session will work incorrectly.
-[00:13:59.148] Browser WARN    BJS - [22:31:53]: Session mode "immersive-vr" not supported in browser
-[00:15:26.049] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:15:26.366] Browser LOG     BJS - [22:33:20]: Babylon.js v8.41.0 - WebGL2 - Parallel shader compilation
-[00:15:26.788] Browser WARN    BJS - [22:33:21]: Error executing makeXRCompatible. This does not mean that the session will work incorrectly.
-[00:15:26.788] Browser WARN    BJS - [22:33:21]: Session mode "immersive-vr" not supported in browser
+[00:00:01.887] Server  LOG     ✓ Ready in 1425ms
+[00:00:05.651] Server  LOG     ○ Compiling / ...
+[00:00:07.490] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:07.728] Browser LOG     BJS - [21:43:59]: Babylon.js v8.41.0 - WebGL2
+[00:00:09.688] Browser ERROR   BJS - [21:44:01]: Error initializing XR
+[00:00:09.688] Browser ERROR   BJS - [21:44:01]: Error: WebXR not supported on this browser.
+[00:00:09.688] Browser ERROR   unhandledRejection: TypeError: can't access property "featuresManager", xr.baseExperience is undefined

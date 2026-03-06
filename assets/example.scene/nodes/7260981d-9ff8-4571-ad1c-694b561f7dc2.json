@@ -1,0 +1,58 @@
+{
+    "tags": null,
+    "position": [
+        0.7090726494789124,
+        0.8595691323280334,
+        -1.2373197078704834
+    ],
+    "rotation": [
+        0,
+        0,
+        0
+    ],
+    "rotationQuaternion": [
+        0,
+        0,
+        0,
+        1
+    ],
+    "scaling": [
+        1,
+        1,
+        1
+    ],
+    "billboardMode": 0,
+    "scalingDeterminant": 1,
+    "infiniteDistance": false,
+    "ignoreNonUniformScaling": false,
+    "reIntegrateRotationIntoRotationQuaternion": false,
+    "name": "geo3",
+    "id": "7260981d-9ff8-4571-ad1c-694b561f7dc2",
+    "state": "",
+    "metadata": {
+        "parentId": 1772759634900
+    },
+    "type": "TransformNode",
+    "uniqueId": 1772759634924,
+    "localMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+    ],
+    "isEnabled": true,
+    "animations": [],
+    "ranges": []
+}

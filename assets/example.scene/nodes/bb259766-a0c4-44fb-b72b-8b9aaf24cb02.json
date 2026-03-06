@@ -1,0 +1,58 @@
+{
+    "tags": null,
+    "position": [
+        1.2410979270935059,
+        0.16021311283111572,
+        -0.9114887714385986
+    ],
+    "rotation": [
+        0,
+        0,
+        0
+    ],
+    "rotationQuaternion": [
+        0,
+        0,
+        0,
+        1
+    ],
+    "scaling": [
+        1,
+        1,
+        1
+    ],
+    "billboardMode": 0,
+    "scalingDeterminant": 1,
+    "infiniteDistance": false,
+    "ignoreNonUniformScaling": false,
+    "reIntegrateRotationIntoRotationQuaternion": false,
+    "name": "geo2",
+    "id": "bb259766-a0c4-44fb-b72b-8b9aaf24cb02",
+    "state": "",
+    "metadata": {
+        "parentId": 1772759634900
+    },
+    "type": "TransformNode",
+    "uniqueId": 1772759634923,
+    "localMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+    ],
+    "isEnabled": true,
+    "animations": [],
+    "ranges": []
+}

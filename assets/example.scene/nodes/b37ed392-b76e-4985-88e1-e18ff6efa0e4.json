@@ -1,0 +1,58 @@
+{
+    "tags": null,
+    "position": [
+        0,
+        0.75,
+        0
+    ],
+    "rotation": [
+        0,
+        0,
+        0
+    ],
+    "rotationQuaternion": [
+        0,
+        0,
+        0,
+        1
+    ],
+    "scaling": [
+        1,
+        1,
+        1
+    ],
+    "billboardMode": 0,
+    "scalingDeterminant": 1,
+    "infiniteDistance": false,
+    "ignoreNonUniformScaling": false,
+    "reIntegrateRotationIntoRotationQuaternion": false,
+    "name": "Walls",
+    "id": "b37ed392-b76e-4985-88e1-e18ff6efa0e4",
+    "state": "",
+    "metadata": {
+        "parentId": 1772759634900
+    },
+    "type": "TransformNode",
+    "uniqueId": 1772759634926,
+    "localMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+    ],
+    "isEnabled": true,
+    "animations": [],
+    "ranges": []
+}

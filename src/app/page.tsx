@@ -94,10 +94,10 @@ export default function Home() {
 }
 
 // 🔥 ATIVAR WEBXR
-const ground = scene.getMeshByName("ground");
+const Floor = scene.getMeshByName("Floor");
 
 const xr = await scene.createDefaultXRExperienceAsync({
-  floorMeshes: ground ? [ground] : []
+  floorMeshes: Floor ? [Floor] : []
 });
 
 const fm = xr.baseExperience.featuresManager;
@@ -108,7 +108,7 @@ fm.enableFeature(
   "latest",
   {
     xrInput: xr.input,
-    floorMeshes: ground ? [ground] : []
+    floorMeshes: Floor ? [Floor] : []
   }
 );
 

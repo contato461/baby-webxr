@@ -14,15 +14,15 @@
     "applyGravity": false,
     "updateUpVectorFromRotation": false,
     "rotation": [
-        0.8604473212332053,
-        -1.5917402778188288,
+        -0.026179938779913745,
+        1.5707963267948966,
         0
     ],
     "speed": 500,
     "position": [
-        451.1599999999996,
-        621.4999999999995,
-        -18.320000000000054
+        -116.81999999999998,
+        63.70999999999997,
+        0
     ],
     "upVector": [
         0,
@@ -33,7 +33,7 @@
     "orthoRight": 715.5,
     "orthoBottom": -317,
     "orthoTop": 317,
-    "fov": 0.8986490123706266,
+    "fov": 0.818937929261531,
     "projectionPlaneTilt": 0,
     "minZ": 1,
     "maxZ": 1000000,
@@ -48,7 +48,7 @@
     "state": "",
     "metadata": {
         "sensorSize": 17.36000000000002,
-        "focalLength": 18
+        "focalLength": 20
     },
     "uniqueId": 20,
     "type": "UniversalCamera",

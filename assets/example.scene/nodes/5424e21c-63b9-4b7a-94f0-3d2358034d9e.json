@@ -1,0 +1,58 @@
+{
+    "tags": null,
+    "position": [
+        -1.6232835054397583,
+        0.7423163652420044,
+        -0.07186007499694824
+    ],
+    "rotation": [
+        0,
+        0,
+        0
+    ],
+    "rotationQuaternion": [
+        0,
+        0,
+        0,
+        1
+    ],
+    "scaling": [
+        1,
+        1,
+        1
+    ],
+    "billboardMode": 0,
+    "scalingDeterminant": 1,
+    "infiniteDistance": false,
+    "ignoreNonUniformScaling": false,
+    "reIntegrateRotationIntoRotationQuaternion": false,
+    "name": "tv",
+    "id": "5424e21c-63b9-4b7a-94f0-3d2358034d9e",
+    "state": "",
+    "metadata": {
+        "parentId": 1772759634900
+    },
+    "type": "TransformNode",
+    "uniqueId": 1772759634927,
+    "localMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+    ],
+    "isEnabled": true,
+    "animations": [],
+    "ranges": []
+}
