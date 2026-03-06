@@ -14,14 +14,14 @@
     "applyGravity": false,
     "updateUpVectorFromRotation": false,
     "rotation": [
-        -0.026179938779913745,
-        1.5707963267948966,
+        0.17098205713874745,
+        1.5235046601282303,
         0
     ],
-    "speed": 500,
+    "speed": 0.5,
     "position": [
-        -116.81999999999998,
-        63.70999999999997,
+        -2.720000000000003,
+        1.7,
         0
     ],
     "upVector": [
@@ -33,10 +33,10 @@
     "orthoRight": 715.5,
     "orthoBottom": -317,
     "orthoTop": 317,
-    "fov": 0.818937929261531,
+    "fov": 0.7692094296444271,
     "projectionPlaneTilt": 0,
-    "minZ": 1,
-    "maxZ": 1000000,
+    "minZ": 0.01,
+    "maxZ": 1000,
     "inertia": 0,
     "mode": 0,
     "layerMask": 268435455,
@@ -47,8 +47,8 @@
     "id": "3ee0f345-7bea-4f59-a657-28c90a7d5e74",
     "state": "",
     "metadata": {
-        "sensorSize": 17.36000000000002,
-        "focalLength": 20
+        "sensorSize": 17,
+        "focalLength": 21
     },
     "uniqueId": 20,
     "type": "UniversalCamera",
@@ -86,7 +86,7 @@
                 1,
                 2
             ],
-            "angularSensibility": 500
+            "angularSensibility": 600
         }
     },
     "animations": [],

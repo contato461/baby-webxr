@@ -10,16 +10,10 @@ import { Engine } from "@babylonjs/core/Engines/engine";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { SceneLoaderFlags } from "@babylonjs/core/Loading/sceneLoaderFlags";
 
-import "@babylonjs/core/Loading/loadingScreen";
 import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
 
 import "@babylonjs/core/Cameras/universalCamera";
 import "@babylonjs/core/Cameras/Inputs/freeCameraVirtualJoystickInput";
-
-import "@babylonjs/core/Meshes/groundMesh";
-import "@babylonjs/core/Lights/directionalLight";
-
-import "@babylonjs/materials/sky";
 
 import { loadScene } from "babylonjs-editor-tools";
 import { scriptsMap } from "@/scripts/scripts";
@@ -69,19 +63,20 @@ export default function Home() {
 
       camera.attachControl(canvas, true);
 
-      camera.speed = 0.15;
-      camera.angularSensibility = 4000;
+      camera.speed = 0.02;
+      camera.angularSensibility = 600;
 
       scene.collisionsEnabled = true;
       camera.checkCollisions = true;
 
       camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
 
+      // joystick mobile
       camera.inputs.addVirtualJoystick();
 
     }
 
-    // ATIVAR COLISÃO NOS MESHES
+    // COLISÕES
 
     scene.meshes.forEach(mesh => {
       mesh.checkCollisions = true;
@@ -89,13 +84,13 @@ export default function Home() {
 
     const floor = scene.getMeshByName("Floor");
 
-    // XR
+    // WEBXR
 
     const xr = await scene.createDefaultXRExperienceAsync({
 
       uiOptions: {
         sessionMode: "immersive-vr",
-        referenceSpaceType: "local", // corrigido aqui
+        referenceSpaceType: "local-floor",
       },
 
       floorMeshes: floor ? [floor] : [],
@@ -143,8 +138,6 @@ export default function Home() {
       }
 
     };
-
-    // RENDER LOOP
 
     engine.runRenderLoop(() => {
       scene.render();
