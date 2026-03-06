@@ -5,20 +5,19 @@ import "@babylonjs/core/XR/webXRDefaultExperience";
 
 import { useEffect, useRef } from "react";
 
-import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
+import { Engine } from "@babylonjs/core/Engines/engine";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-
-import "@babylonjs/core/Cameras/universalCamera";
-import "@babylonjs/core/Cameras/Inputs/freeCameraVirtualJoystickInput";
-
-import "@babylonjs/core/Meshes/Builders/capsuleBuilder";
-import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
-
 import { SceneLoaderFlags } from "@babylonjs/core/Loading/sceneLoaderFlags";
 
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 import HavokPhysics from "@babylonjs/havok";
+
+import "@babylonjs/core/Loading/loadingScreen";
+import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
+
+import "@babylonjs/core/Cameras/universalCamera";
+import "@babylonjs/core/Cameras/Inputs/freeCameraVirtualJoystickInput";
 
 import { loadScene } from "babylonjs-editor-tools";
 import { scriptsMap } from "@/scripts/scripts";
@@ -31,11 +30,14 @@ export default function Home() {
 
     if (!canvasRef.current) return;
 
-    const engine = new Engine(canvasRef.current, true);
+    const engine = new Engine(canvasRef.current, true, {
+      antialias: true,
+      adaptToDeviceRatio: true
+    });
 
     const scene = new Scene(engine);
 
-    init(engine, scene);
+    start(engine, scene);
 
     const resize = () => engine.resize();
     window.addEventListener("resize", resize);
@@ -48,7 +50,7 @@ export default function Home() {
 
   }, []);
 
-  async function init(engine: Engine, scene: Scene) {
+  async function start(engine: Engine, scene: Scene) {
 
     // PHYSICS
     const havok = await HavokPhysics();
@@ -61,43 +63,34 @@ export default function Home() {
     scene.gravity = new Vector3(0, -0.5, 0);
     scene.collisionsEnabled = true;
 
-    // LOAD SCENE
     SceneLoaderFlags.ForceFullSceneLoadingForIncremental = true;
 
+    // CARREGAR CENA
     await loadScene("/scene/", "example.babylon", scene, scriptsMap);
 
     const canvas = engine.getRenderingCanvas();
 
-    if (!canvas) return;
+    if (!canvas || !scene.activeCamera) return;
 
     const camera = scene.activeCamera as BABYLON.UniversalCamera;
 
     camera.attachControl(canvas, true);
 
+    // altura do observador
+    camera.position = new Vector3(0, 1.7, -5);
+
     camera.speed = 0.15;
     camera.angularSensibility = 4000;
 
-    camera.inputs.addVirtualJoystick();
-
-    camera.applyGravity = true;
     camera.checkCollisions = true;
+    camera.applyGravity = true;
 
     camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
 
-    // PLAYER CAPSULE
-    const player = BABYLON.MeshBuilder.CreateCapsule(
-      "player",
-      { height: 1.8, radius: 0.4 },
-      scene
-    );
+    // joystick mobile
+    camera.inputs.addVirtualJoystick();
 
-    player.position = new Vector3(0, 0.9, -5);
-    player.isVisible = false;
-
-    camera.parent = player;
-    camera.position = new Vector3(0, 0.9, 0);
-
-    // COLISÃO EM TODOS MESHES
+    // colisão em todos meshes
     scene.meshes.forEach(mesh => {
       mesh.checkCollisions = true;
     });
