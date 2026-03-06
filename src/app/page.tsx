@@ -114,11 +114,17 @@ export default function Home() {
     // FORÇAR ALTURA DO QUEST
     // =========================
 
-    xr.baseExperience.onInitialXRPoseSetObservable.add(() => {
+    xr.baseExperience.onStateChangedObservable.add((state) => {
 
-  const xrCamera = xr.baseExperience.camera;
+  if (state === BABYLON.WebXRState.IN_XR) {
 
-  xrCamera.position.y = 1.7;
+    const xrCamera = xr.baseExperience.camera;
+
+    if (xrCamera.parent) {
+      xrCamera.parent.position.y = 1.7;
+    }
+
+  }
 
 });
 
