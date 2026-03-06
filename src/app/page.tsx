@@ -80,7 +80,6 @@ export default function Home() {
       camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
 
       camera.inputs.addVirtualJoystick();
-
     }
 
     // =========================
@@ -105,32 +104,39 @@ export default function Home() {
       },
 
       optionalFeatures: true,
-
       floorMeshes: floor ? [floor] : [],
 
     });
 
     // =========================
-    // FORÇAR ALTURA DO QUEST
+    // CORREÇÃO ALTURA QUEST
     // =========================
+
+    let fixHeight = false;
 
     xr.baseExperience.onStateChangedObservable.add((state) => {
 
-  if (state === BABYLON.WebXRState.IN_XR) {
+      if (state === BABYLON.WebXRState.IN_XR) {
+        fixHeight = true;
+      } else {
+        fixHeight = false;
+      }
 
-    const xrCamera = xr.baseExperience.camera;
+    });
 
-    if (xrCamera.parent) {
+    scene.onBeforeRenderObservable.add(() => {
 
-      const rig = xrCamera.parent as BABYLON.TransformNode;
+      if (fixHeight) {
 
-      rig.position.y = 1.7;
+        const xrCamera = xr.baseExperience.camera;
 
-    }
+        if (xrCamera.position.y < 1.6) {
+          xrCamera.position.y = 1.7;
+        }
 
-  }
+      }
 
-});
+    });
 
     const fm = xr.baseExperience.featuresManager;
 
@@ -146,6 +152,48 @@ export default function Home() {
         floorMeshes: floor ? [floor] : [],
       }
     );
+
+    // =========================
+    // BOTÃO EXIT VR
+    // =========================
+
+    const exitButton = document.createElement("button");
+
+    exitButton.innerText = "Exit VR";
+
+    exitButton.style.position = "absolute";
+    exitButton.style.bottom = "20px";
+    exitButton.style.left = "20px";
+    exitButton.style.padding = "12px 20px";
+    exitButton.style.fontSize = "18px";
+    exitButton.style.background = "#000";
+    exitButton.style.color = "#fff";
+    exitButton.style.border = "none";
+    exitButton.style.borderRadius = "6px";
+    exitButton.style.zIndex = "1000";
+    exitButton.style.display = "none";
+
+    document.body.appendChild(exitButton);
+
+    exitButton.onclick = async () => {
+
+      if (xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
+
+        await xr.baseExperience.exitXRAsync();
+
+      }
+
+    };
+
+    xr.baseExperience.onStateChangedObservable.add((state) => {
+
+      if (state === BABYLON.WebXRState.IN_XR) {
+        exitButton.style.display = "block";
+      } else {
+        exitButton.style.display = "none";
+      }
+
+    });
 
     // =========================
     // RENDER LOOP
