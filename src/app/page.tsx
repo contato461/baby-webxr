@@ -61,9 +61,7 @@ export default function Home() {
 
     const canvas = engine.getRenderingCanvas();
 
-    // =========================
     // CAMERA DESKTOP + MOBILE
-    // =========================
 
     if (scene.activeCamera && canvas) {
 
@@ -80,11 +78,10 @@ export default function Home() {
       camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
 
       camera.inputs.addVirtualJoystick();
+
     }
 
-    // =========================
-    // ATIVAR COLISÃO EM TODOS MESHES
-    // =========================
+    // ATIVAR COLISÃO NOS MESHES
 
     scene.meshes.forEach(mesh => {
       mesh.checkCollisions = true;
@@ -92,57 +89,22 @@ export default function Home() {
 
     const floor = scene.getMeshByName("Floor");
 
-    // =========================
     // XR
-    // =========================
 
     const xr = await scene.createDefaultXRExperienceAsync({
 
       uiOptions: {
         sessionMode: "immersive-vr",
-        referenceSpaceType: "local-floor",
+        referenceSpaceType: "local", // corrigido aqui
       },
 
-      optionalFeatures: true,
       floorMeshes: floor ? [floor] : [],
-
-    });
-
-    // =========================
-    // CORREÇÃO ALTURA QUEST
-    // =========================
-
-    let fixHeight = false;
-
-    xr.baseExperience.onStateChangedObservable.add((state) => {
-
-      if (state === BABYLON.WebXRState.IN_XR) {
-        fixHeight = true;
-      } else {
-        fixHeight = false;
-      }
-
-    });
-
-    scene.onBeforeRenderObservable.add(() => {
-
-      if (fixHeight) {
-
-        const xrCamera = xr.baseExperience.camera;
-
-        if (xrCamera.position.y < 1.6) {
-          xrCamera.position.y = 1.7;
-        }
-
-      }
 
     });
 
     const fm = xr.baseExperience.featuresManager;
 
-    // =========================
     // TELEPORT VR
-    // =========================
 
     fm.enableFeature(
       BABYLON.WebXRFeatureName.TELEPORTATION,
@@ -153,9 +115,7 @@ export default function Home() {
       }
     );
 
-    // =========================
     // BOTÃO EXIT VR
-    // =========================
 
     const exitButton = document.createElement("button");
 
@@ -171,7 +131,6 @@ export default function Home() {
     exitButton.style.border = "none";
     exitButton.style.borderRadius = "6px";
     exitButton.style.zIndex = "1000";
-    exitButton.style.display = "none";
 
     document.body.appendChild(exitButton);
 
@@ -185,19 +144,7 @@ export default function Home() {
 
     };
 
-    xr.baseExperience.onStateChangedObservable.add((state) => {
-
-      if (state === BABYLON.WebXRState.IN_XR) {
-        exitButton.style.display = "block";
-      } else {
-        exitButton.style.display = "none";
-      }
-
-    });
-
-    // =========================
     // RENDER LOOP
-    // =========================
 
     engine.runRenderLoop(() => {
       scene.render();
