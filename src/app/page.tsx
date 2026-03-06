@@ -1,6 +1,8 @@
 "use client";
+
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/core/XR/webXRDefaultExperience";
+
 import { useEffect, useRef } from "react";
 
 import { Scene } from "@babylonjs/core/scene";
@@ -15,105 +17,101 @@ import "@babylonjs/core/Loading/loadingScreen";
 import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
 
 import "@babylonjs/core/Cameras/universalCamera";
-
 import "@babylonjs/core/Meshes/groundMesh";
 
 import "@babylonjs/core/Lights/directionalLight";
 
-import "@babylonjs/core/Materials/PBR/pbrMaterial";
-
 import "@babylonjs/core/Physics";
 
-import { loadScene } from "babylonjs-editor-tools";
+import "@babylonjs/materials/sky";
 
+import { loadScene } from "babylonjs-editor-tools";
 import { scriptsMap } from "@/scripts/scripts";
 
 export default function Home() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-	useEffect(() => {
-		if (!canvasRef.current) return;
+  useEffect(() => {
+    if (!canvasRef.current) return;
 
-		const engine = new Engine(canvasRef.current, true, {
-			stencil: true,
-			antialias: true,
-			adaptToDeviceRatio: true
-		});
+    const engine = new Engine(canvasRef.current, true, {
+      antialias: true,
+      adaptToDeviceRatio: true,
+      powerPreference: "high-performance",
+    });
 
-		const scene = new Scene(engine);
+    const scene = new Scene(engine);
 
-		handleLoad(engine, scene);
+    handleLoad(engine, scene);
 
-		const resize = () => engine.resize();
-		window.addEventListener("resize", resize);
+    const resize = () => engine.resize();
+    window.addEventListener("resize", resize);
 
-		return () => {
-			scene.dispose();
-			engine.dispose();
-			window.removeEventListener("resize", resize);
-		};
-	}, []);
+    return () => {
+      scene.dispose();
+      engine.dispose();
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
 
-	async function handleLoad(engine: Engine, scene: Scene) {
+  async function handleLoad(engine: Engine, scene: Scene) {
+    // Física Havok
+    const havok = await HavokPhysics();
 
-		const havok = await HavokPhysics();
+    scene.enablePhysics(
+      new Vector3(0, -9.81, 0),
+      new HavokPlugin(true, havok)
+    );
 
-		scene.enablePhysics(
-			new Vector3(0, -9.81, 0),
-			new HavokPlugin(true, havok)
-		);
+    SceneLoaderFlags.ForceFullSceneLoadingForIncremental = true;
 
-		SceneLoaderFlags.ForceFullSceneLoadingForIncremental = true;
+    await loadScene("/scene/", "example.babylon", scene, scriptsMap);
 
-		await loadScene("/scene/", "example.babylon", scene, scriptsMap);
+    const canvas = engine.getRenderingCanvas();
 
-		const canvas = engine.getRenderingCanvas();
+    if (scene.activeCamera && canvas) {
+      scene.activeCamera.attachControl(canvas, true);
 
-		if (scene.activeCamera && canvas) {
-			scene.activeCamera.attachControl(canvas, true);
-			scene.activeCamera.position = new Vector3(0, 1.7, -5);
-		}
+      // altura inicial da câmera
+      scene.activeCamera.position = new Vector3(0, 1.7, -5);
+    }
 
-		// pegar chão
-		const floor = scene.getMeshByName("Floor");
+    // pegar chão
+    const floor = scene.getMeshByName("Floor");
 
-		// XR EXPERIENCE
-		const xr = await scene.createDefaultXRExperienceAsync({
+    // XR
+    const xr = await scene.createDefaultXRExperienceAsync({
+      uiOptions: {
+        sessionMode: "immersive-vr",
+        referenceSpaceType: "local-floor",
+      },
+      optionalFeatures: true,
+      floorMeshes: floor ? [floor] : [],
+    });
 
-			uiOptions: {
-				sessionMode: "immersive-vr"
-			},
+    const fm = xr.baseExperience.featuresManager;
 
-			optionalFeatures: true,
+    // teleport
+    fm.enableFeature(
+      BABYLON.WebXRFeatureName.TELEPORTATION,
+      "latest",
+      {
+        xrInput: xr.input,
+        floorMeshes: floor ? [floor] : [],
+      }
+    );
 
-			floorMeshes: floor ? [floor] : undefined
-		});
+    engine.runRenderLoop(() => {
+      scene.render();
+    });
+  }
 
-		// 🔥 IMPORTANTE PARA QUEST
-		xr.baseExperience.sessionManager.referenceSpaceType = "local-floor";
-
-		const fm = xr.baseExperience.featuresManager;
-
-		fm.enableFeature(
-			BABYLON.WebXRFeatureName.TELEPORTATION,
-			"latest",
-			{
-				xrInput: xr.input,
-				floorMeshes: floor ? [floor] : []
-			}
-		);
-
-		engine.runRenderLoop(() => {
-			scene.render();
-		});
-	}
-
-	return (
-		<main className="flex w-screen h-screen">
-			<canvas
-				ref={canvasRef}
-				className="w-full h-full outline-none"
-			/>
-		</main>
-	);
+  return (
+    <main className="flex w-screen h-screen">
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full outline-none"
+      />
+    </main>
+  );
 }
