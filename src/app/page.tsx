@@ -71,21 +71,14 @@ export default function Home() {
 
       camera.attachControl(canvas, true);
 
-     
-      
-
       camera.speed = 0.15;
       camera.angularSensibility = 4000;
 
-      // colisões
       scene.collisionsEnabled = true;
-
       camera.checkCollisions = true;
 
-      // corpo do player (~1.8m)
       camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
 
-      // joystick mobile
       camera.inputs.addVirtualJoystick();
 
     }
@@ -97,10 +90,6 @@ export default function Home() {
     scene.meshes.forEach(mesh => {
       mesh.checkCollisions = true;
     });
-
-    // =========================
-    // PEGAR CHÃO
-    // =========================
 
     const floor = scene.getMeshByName("Floor");
 
@@ -121,12 +110,27 @@ export default function Home() {
 
     });
 
-    // corrigir altura do observador VR
-    xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
+    // =========================
+    // FORÇAR ALTURA DO QUEST
+    // =========================
 
-      const xrCamera = xr.baseExperience.camera;
+    xr.baseExperience.sessionManager.onXRSessionInit.add(async () => {
 
-      xrCamera.position.y = 1.7;
+      const sessionManager = xr.baseExperience.sessionManager;
+
+      const xrSession = sessionManager.session;
+
+      const referenceSpace = await xrSession.requestReferenceSpace("local-floor");
+
+      const transform = new XRRigidTransform({
+        x: 0,
+        y: 1.7,
+        z: 0
+      });
+
+      const offsetReferenceSpace = referenceSpace.getOffsetReferenceSpace(transform);
+
+      sessionManager.setReferenceSpace(offsetReferenceSpace);
 
     });
 
@@ -157,12 +161,10 @@ export default function Home() {
 
   return (
     <main className="flex w-screen h-screen">
-
       <canvas
         ref={canvasRef}
         className="w-full h-full outline-none"
       />
-
     </main>
   );
 
