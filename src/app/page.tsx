@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as BABYLON from "@babylonjs/core";
@@ -9,8 +10,8 @@ import { Scene } from "@babylonjs/core/scene";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { SceneLoaderFlags } from "@babylonjs/core/Loading/sceneLoaderFlags";
-
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
+
 import HavokPhysics from "@babylonjs/havok";
 
 import "@babylonjs/core/Loading/loadingScreen";
@@ -18,6 +19,12 @@ import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
 
 import "@babylonjs/core/Cameras/universalCamera";
 import "@babylonjs/core/Cameras/Inputs/freeCameraVirtualJoystickInput";
+
+import "@babylonjs/core/Meshes/groundMesh";
+import "@babylonjs/core/Lights/directionalLight";
+
+import "@babylonjs/core/Physics";
+import "@babylonjs/materials/sky";
 
 import { loadScene } from "babylonjs-editor-tools";
 import { scriptsMap } from "@/scripts/scripts";
@@ -32,12 +39,13 @@ export default function Home() {
 
     const engine = new Engine(canvasRef.current, true, {
       antialias: true,
-      adaptToDeviceRatio: true
+      adaptToDeviceRatio: true,
+      powerPreference: "high-performance",
     });
 
     const scene = new Scene(engine);
 
-    start(engine, scene);
+    handleLoad(engine, scene);
 
     const resize = () => engine.resize();
     window.addEventListener("resize", resize);
@@ -50,9 +58,12 @@ export default function Home() {
 
   }, []);
 
-  async function start(engine: Engine, scene: Scene) {
+  async function handleLoad(engine: Engine, scene: Scene) {
 
-    // PHYSICS
+    // =========================
+    // HAVOK PHYSICS
+    // =========================
+
     const havok = await HavokPhysics();
 
     scene.enablePhysics(
@@ -60,44 +71,63 @@ export default function Home() {
       new HavokPlugin(true, havok)
     );
 
-    scene.gravity = new Vector3(0, -0.5, 0);
-    scene.collisionsEnabled = true;
-
     SceneLoaderFlags.ForceFullSceneLoadingForIncremental = true;
 
-    // CARREGAR CENA
     await loadScene("/scene/", "example.babylon", scene, scriptsMap);
 
     const canvas = engine.getRenderingCanvas();
 
-    if (!canvas || !scene.activeCamera) return;
+    // =========================
+    // CAMERA DESKTOP + MOBILE
+    // =========================
 
-    const camera = scene.activeCamera as BABYLON.UniversalCamera;
+    if (scene.activeCamera && canvas) {
 
-    camera.attachControl(canvas, true);
+      const camera = scene.activeCamera as BABYLON.UniversalCamera;
 
-    // altura do observador
-    camera.position = new Vector3(0, 1.7, -5);
+      camera.attachControl(canvas, true);
 
-    camera.speed = 0.15;
-    camera.angularSensibility = 4000;
+      // posição inicial
+      camera.position = new Vector3(0, 2, -5);
 
-    camera.checkCollisions = true;
-    camera.applyGravity = true;
+      camera.speed = 0.15;
+      camera.angularSensibility = 4000;
 
-    camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
+      // gravidade
+      scene.gravity = new Vector3(0, -0.5, 0);
 
-    // joystick mobile
-    camera.inputs.addVirtualJoystick();
+      // colisões
+      scene.collisionsEnabled = true;
 
-    // colisão em todos meshes
+      camera.checkCollisions = true;
+      camera.applyGravity = true;
+
+      // corpo do player (~1.8m)
+      camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
+
+      // joystick mobile
+      camera.inputs.addVirtualJoystick();
+
+    }
+
+    // =========================
+    // ATIVAR COLISÃO EM TODOS MESHES
+    // =========================
+
     scene.meshes.forEach(mesh => {
       mesh.checkCollisions = true;
     });
 
+    // =========================
+    // PEGAR CHÃO
+    // =========================
+
     const floor = scene.getMeshByName("Floor");
 
+    // =========================
     // XR
+    // =========================
+
     const xr = await scene.createDefaultXRExperienceAsync({
 
       uiOptions: {
@@ -105,10 +135,13 @@ export default function Home() {
         referenceSpaceType: "local-floor",
       },
 
+      optionalFeatures: true,
+
       floorMeshes: floor ? [floor] : [],
 
     });
 
+    // corrigir altura do observador VR
     xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
 
       const xrCamera = xr.baseExperience.camera;
@@ -119,6 +152,10 @@ export default function Home() {
 
     const fm = xr.baseExperience.featuresManager;
 
+    // =========================
+    // TELEPORT VR
+    // =========================
+
     fm.enableFeature(
       BABYLON.WebXRFeatureName.TELEPORTATION,
       "latest",
@@ -128,6 +165,10 @@ export default function Home() {
       }
     );
 
+    // =========================
+    // RENDER LOOP
+    // =========================
+
     engine.runRenderLoop(() => {
       scene.render();
     });
@@ -136,10 +177,12 @@ export default function Home() {
 
   return (
     <main className="flex w-screen h-screen">
+
       <canvas
         ref={canvasRef}
         className="w-full h-full outline-none"
       />
+
     </main>
   );
 
