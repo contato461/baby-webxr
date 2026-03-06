@@ -40,7 +40,7 @@
                 1
             ],
             "isEnabled": true,
-            "isVisible": false,
+            "isVisible": true,
             "infiniteDistance": false,
             "pickable": true,
             "receiveShadows": true,
@@ -176,7 +176,7 @@
                 },
                 "hasAlpha": false,
                 "getAlphaFromRGB": false,
-                "level": 0,
+                "level": 1,
                 "coordinatesIndex": 0,
                 "optimizeUVAllocation": true,
                 "coordinatesMode": 0,
@@ -212,9 +212,9 @@
             ],
             "useOnlyMetallicFromMetallicReflectanceTexture": false,
             "ambient": [
-                0.532244485603637,
-                0.07114513831132796,
-                0.07114513831132796
+                0,
+                0,
+                0
             ],
             "albedo": [
                 1,
