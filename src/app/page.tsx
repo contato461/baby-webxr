@@ -5,25 +5,21 @@ import "@babylonjs/core/XR/webXRDefaultExperience";
 
 import { useEffect, useRef } from "react";
 
-import { Scene } from "@babylonjs/core/scene";
 import { Engine } from "@babylonjs/core/Engines/engine";
+import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { SceneLoaderFlags } from "@babylonjs/core/Loading/sceneLoaderFlags";
-import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
-
-import HavokPhysics from "@babylonjs/havok";
-
-import "@babylonjs/core/Loading/loadingScreen";
-import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
 
 import "@babylonjs/core/Cameras/universalCamera";
 import "@babylonjs/core/Cameras/Inputs/freeCameraVirtualJoystickInput";
 
-import "@babylonjs/core/Meshes/groundMesh";
-import "@babylonjs/core/Lights/directionalLight";
+import "@babylonjs/core/Meshes/Builders/capsuleBuilder";
 
-import "@babylonjs/core/Physics";
-import "@babylonjs/materials/sky";
+import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
+
+import { SceneLoaderFlags } from "@babylonjs/core/Loading/sceneLoaderFlags";
+
+import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
+import HavokPhysics from "@babylonjs/havok";
 
 import { loadScene } from "babylonjs-editor-tools";
 import { scriptsMap } from "@/scripts/scripts";
@@ -39,12 +35,11 @@ export default function Home() {
     const engine = new Engine(canvasRef.current, true, {
       antialias: true,
       adaptToDeviceRatio: true,
-      powerPreference: "high-performance",
     });
 
     const scene = new Scene(engine);
 
-    handleLoad(engine, scene);
+    init(engine, scene);
 
     const resize = () => engine.resize();
     window.addEventListener("resize", resize);
@@ -57,9 +52,12 @@ export default function Home() {
 
   }, []);
 
-  async function handleLoad(engine: Engine, scene: Scene) {
+  async function init(engine: Engine, scene: Scene) {
 
+    // =====================
     // PHYSICS
+    // =====================
+
     const havok = await HavokPhysics();
 
     scene.enablePhysics(
@@ -67,62 +65,86 @@ export default function Home() {
       new HavokPlugin(true, havok)
     );
 
+    scene.gravity = new Vector3(0, -0.5, 0);
+    scene.collisionsEnabled = true;
+
+    // =====================
+    // LOAD SCENE
+    // =====================
+
     SceneLoaderFlags.ForceFullSceneLoadingForIncremental = true;
 
     await loadScene("/scene/", "example.babylon", scene, scriptsMap);
 
+    // =====================
+    // PLAYER CONTROLLER
+    // =====================
+
+    const player = BABYLON.MeshBuilder.CreateCapsule(
+      "player",
+      {
+        height: 1.8,
+        radius: 0.4
+      },
+      scene
+    );
+
+    player.position = new Vector3(0, 0.9, -5);
+    player.checkCollisions = true;
+    player.isVisible = false;
+
+    // =====================
+    // CAMERA
+    // =====================
+
+    const camera = new BABYLON.UniversalCamera(
+      "camera",
+      new Vector3(0, 0.9, 0),
+      scene
+    );
+
+    camera.parent = player;
+
     const canvas = engine.getRenderingCanvas();
 
-    if (scene.activeCamera && canvas) {
-
-      const camera = scene.activeCamera as BABYLON.UniversalCamera;
-
-      camera.parent = null;
+    if (canvas) {
 
       camera.attachControl(canvas, true);
-
-      // altura do player
-      camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
-      camera.ellipsoidOffset = new Vector3(0, 0.9, 0);
-
-      // colisões
-      scene.collisionsEnabled = true;
-      scene.gravity = new Vector3(0, -0.5, 0);
-
-      camera.checkCollisions = true;
-      camera.applyGravity = true;
 
       camera.speed = 0.15;
       camera.angularSensibility = 4000;
 
-      // JOYSTICK MOBILE
       camera.inputs.addVirtualJoystick();
-
-      // IMPORTANTE: posicionar depois que tudo carregou
-      scene.executeWhenReady(() => {
-
-        camera.position = new Vector3(0, 1.8, -5);
-
-      });
 
     }
 
-    // ativar colisão em todos meshes
+    scene.activeCamera = camera;
+
+    camera.applyGravity = true;
+    camera.checkCollisions = true;
+
+    camera.ellipsoid = new Vector3(0.4, 0.9, 0.4);
+
+    // =====================
+    // COLISÃO EM TODOS MESHES
+    // =====================
+
     scene.meshes.forEach(mesh => {
       mesh.checkCollisions = true;
     });
 
     const floor = scene.getMeshByName("Floor");
 
+    // =====================
     // XR
+    // =====================
+
     const xr = await scene.createDefaultXRExperienceAsync({
 
       uiOptions: {
         sessionMode: "immersive-vr",
         referenceSpaceType: "local-floor",
       },
-
-      optionalFeatures: true,
 
       floorMeshes: floor ? [floor] : [],
 
@@ -146,6 +168,10 @@ export default function Home() {
         floorMeshes: floor ? [floor] : [],
       }
     );
+
+    // =====================
+    // RENDER LOOP
+    // =====================
 
     engine.runRenderLoop(() => {
       scene.render();
